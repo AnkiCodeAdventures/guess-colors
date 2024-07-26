@@ -64,11 +64,13 @@ function ColorBox() {
               </Button>
             );
           })}
-          {isCorrectAnswer ? (
-            <Alert severity="success">The answer is correct!</Alert>
-          ) : (
-            <Alert severity="error">Wrong answer, try Again!</Alert>
-          )}
+          {isCorrectAnswer !== null ? (
+            isCorrectAnswer ? (
+              <Alert severity="success">The answer is correct!</Alert>
+            ) : (
+              <Alert severity="error">Wrong answer, try Again!</Alert>
+            )
+          ) : null}
         </div>
       </div>
     </div>
