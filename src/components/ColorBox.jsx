@@ -1,21 +1,75 @@
+import { Alert, Box, Button } from "@mui/material";
 import { randomHexGenerator } from "../utils/randomHexGenerator";
+import { useState } from "react";
+
+function generateColorOptions() {
+  const randomIndex = Math.floor(Math.random() * 3);
+  const options = Array.from({ length: 3 }).map((_, index) => {
+    return {
+      isCorrect: index === randomIndex ? true : false,
+      hexColor: randomHexGenerator(),
+    };
+  });
+  return options;
+}
 
 function ColorBox() {
-  const color = randomHexGenerator();
+  const [colors, setColors] = useState(() => generateColorOptions());
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
+  const correctColorArray = colors.filter((colorObj) => colorObj.isCorrect);
+  const correctColor = correctColorArray[0].hexColor;
 
+  function handleClick(clickedColor) {
+    console.log(clickedColor);
+    if (clickedColor === correctColor) {
+      setIsCorrectAnswer(true);
+      setColors(generateColorOptions);
+      console.log("correct answer");
+    } else {
+      setIsCorrectAnswer(false);
+      console.log("wrong answer");
+    }
+  }
   return (
-    <div>
-      <div
-        style={{
-          width: "200px",
-          height: "200px",
-          backgroundColor: `${color}`,
-        }}
-      ></div>
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <div>
-        <p>{color}</p>
-        <p>option 2</p>
-        <p>option 3</p>
+        <Box
+          maxWidth="sm"
+          style={{
+            width: "200px",
+            height: "200px",
+            backgroundColor: `${correctColor}`,
+          }}
+        />
+
+        <div style={{ margin: "3rem 0" }}>
+          {colors.map((color) => {
+            return (
+              <Button
+                variant="text"
+                onClick={(event) => {
+                  handleClick(event.target.innerText);
+                }}
+                key={color.hexColor}
+              >
+                {color.hexColor}
+              </Button>
+            );
+          })}
+          {isCorrectAnswer ? (
+            <Alert severity="success">The answer is correct!</Alert>
+          ) : (
+            <Alert severity="error">Wrong answer, try Again!</Alert>
+          )}
+        </div>
       </div>
     </div>
   );
