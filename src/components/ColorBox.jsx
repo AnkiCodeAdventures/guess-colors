@@ -1,5 +1,8 @@
-import { Alert, Box, Button } from "@mui/material";
+import { Alert, Box, Button, Typography } from "@mui/material";
 import { randomHexGenerator } from "../utils/randomHexGenerator";
+import CheckIcon from "@mui/icons-material/Check";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
+
 import { useState } from "react";
 
 function generateColorOptions() {
@@ -20,14 +23,11 @@ function ColorBox() {
   const correctColor = correctColorArray[0].hexColor;
 
   function handleClick(clickedColor) {
-    console.log(clickedColor);
     if (clickedColor === correctColor) {
       setIsCorrectAnswer(true);
       setColors(generateColorOptions);
-      console.log("correct answer");
     } else {
       setIsCorrectAnswer(false);
-      console.log("wrong answer");
     }
   }
   return (
@@ -40,6 +40,9 @@ function ColorBox() {
         justifyContent: "center",
       }}
     >
+      <Typography variant="h1" color="white">
+        Guess The Color !
+      </Typography>
       <div>
         <Box
           maxWidth="sm"
@@ -60,15 +63,29 @@ function ColorBox() {
                 }}
                 key={color.hexColor}
               >
-                {color.hexColor}
+                <Typography variant="h5" color="white" gutterBottom>
+                  {color.hexColor}
+                </Typography>
               </Button>
             );
           })}
           {isCorrectAnswer !== null ? (
             isCorrectAnswer ? (
-              <Alert severity="success">The answer is correct!</Alert>
+              <Alert
+                icon={<CheckIcon fontSize="large" />}
+                severity="success"
+                variant="filled"
+              >
+                <Typography variant="h5">The answer is correct !</Typography>
+              </Alert>
             ) : (
-              <Alert severity="error">Wrong answer, try Again!</Alert>
+              <Alert
+                icon={<FmdBadIcon fontSize="large" />}
+                severity="error"
+                variant="filled"
+              >
+                <Typography variant="h5">Wrong Answer, Try Again !</Typography>
+              </Alert>
             )
           ) : null}
         </div>
